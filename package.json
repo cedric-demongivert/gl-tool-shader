@@ -7,7 +7,10 @@
     "test": "jest --coverage",
     "doc": "esdoc",
     "dev": "set NODE_ENV=development | webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-    "build": "set NODE_ENV=production | webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+    "build": "set NODE_ENV=production | webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "preversion": "npm install && npm test",
+    "version": "npm run build && git add --all",
+    "postversion": "git push && git push --tags"
   },
   "repository": "https://gitlab.cedric-demongivert.com/gl-tool/gl-tool-shader.git",
   "author": "Cédric DEMONGIVERT <cedric.demongivert@gmail.com>",

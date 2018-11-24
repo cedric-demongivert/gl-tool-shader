@@ -10,7 +10,7 @@ test:
   stage: test
   script:
     - npm install
-    - npm run test --coverage
+    - npm run test
   tags:
     - NodeJS
     - NPM
@@ -18,9 +18,7 @@ test:
 build:
   stage: build
   script:
-    - npm run production
-    - npm run doc
-    - cp doc dist/doc
+    - npm run build
   only:
     - tags
   tags:
