@@ -1,0 +1,44 @@
+stages:
+  - test
+  - build
+  - publish
+
+cache:
+  untracked: true
+
+test:
+  stage: test
+  script:
+    - npm install
+    - npm run test --coverage
+  tags:
+    - NodeJS
+    - NPM
+
+build:
+  stage: build
+  script:
+    - npm run production
+    - npm run doc
+    - cp doc dist/doc
+  only:
+    - tags
+  tags:
+    - NodeJS
+    - NPM
+  artifacts:
+    untracked: true
+    paths:
+      - ./dist
+
+publish:
+  stage: publish
+  only:
+    - tags
+  script:
+    - npm publish ./dist --access public
+  tags:
+    - NodeJS
+    - NPM
+  dependencies:
+    - build

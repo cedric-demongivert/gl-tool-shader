@@ -1,0 +1,32 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": "> 0.25%, ie 11"
+      }
+    ]
+  ],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": ["."],
+        "alias": {
+          "@library": "./src",
+        },
+        "extensions": [
+          ".js", ".json", ".jsx"
+        ]
+      }
+    ],
+    [
+      "babel-plugin-groundskeeper-willie",
+      {
+          "removeConsole":  false,
+          "removeDebugger": true,
+          "removePragma":   true
+      }
+    ]
+  ]
+}
