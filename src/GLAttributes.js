@@ -12,6 +12,10 @@ export class GLAttributes {
     this._attributes = new Map()
   }
 
+  get context () {
+    return this._program.context
+  }
+
   /**
   * @return {GLProgram} The program that declare the attributes.
   */
@@ -43,24 +47,30 @@ export class GLAttributes {
       location, size, type,
       normalized, stride, offset
     )
+
+    return this
   }
 
   /**
   * Enable an attribute by using its name.
   */
   enable (name) {
-    this.context.enableVertexAttribArray(
+    this.context.context.enableVertexAttribArray(
       this._attributes.get(name).location
     )
+
+    return this
   }
 
   /**
   * Disable an attribute by using its name.
   */
   disable (name) {
-    this.context.disableVertexAttribArray(
+    this.context.context.disableVertexAttribArray(
       this._attributes.get(name).location
     )
+
+    return this
   }
 
   /**
@@ -119,7 +129,7 @@ export class GLAttributes {
 
     this._attributes.clear()
 
-    const context = this.context
+    const context = this.context.context
     const program = this._program._pointer
     const size = context.getProgramParameter(program, context.ACTIVE_ATTRIBUTES)
 
@@ -132,6 +142,8 @@ export class GLAttributes {
         location: context.getAttribLocation(program, info.name)
       })
     }
+
+    return this
   }
 
   /**

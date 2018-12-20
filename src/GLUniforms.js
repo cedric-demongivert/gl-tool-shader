@@ -12,6 +12,10 @@ export class GLUniforms {
     this._uniforms = new Map()
   }
 
+  get context () {
+    return this._program.context
+  }
+
   /**
   * @return {GLProgram} The program that declare the uniforms.
   */
@@ -34,7 +38,10 @@ export class GLUniforms {
   * @return {any} The value of the requested uniform.
   */
   get (name) {
-    return this.context.getUniform(this._program._pointer, this.location(name))
+    return this.context.context.getUniform(
+      this._program._pointer,
+      this.location(name)
+    )
   }
 
   /**
@@ -63,7 +70,7 @@ export class GLUniforms {
 
   _setValue (name, params) {
     const location = this._uniforms.get(name).location
-    const context = this.context
+    const context = this.context.context
 
     switch (this._uniforms.get(name).type) {
       case context.FLOAT:
@@ -118,7 +125,7 @@ export class GLUniforms {
 
   _setArray (name, params) {
     const location = this._uniforms.get(name).location
-    const context = this.context
+    const context = this.context.context
 
     switch (this._uniforms.get(name).type) {
       case context.FLOAT:
@@ -206,7 +213,7 @@ export class GLUniforms {
 
     this._uniforms.clear()
 
-    const context = this.context
+    const context = this.context.context
     const program = this._program._pointer
     const size = context.getProgramParameter(program, context.ACTIVE_UNIFORMS)
 
