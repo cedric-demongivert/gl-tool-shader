@@ -39,7 +39,7 @@ export class GLUniforms {
   */
   get (name) {
     return this.context.context.getUniform(
-      this._program._pointer,
+      this._program.program,
       this.location(name)
     )
   }
@@ -214,7 +214,7 @@ export class GLUniforms {
     this._uniforms.clear()
 
     const context = this.context.context
-    const program = this._program._pointer
+    const program = this._program.program
     const size = context.getProgramParameter(program, context.ACTIVE_UNIFORMS)
 
     for (let index = 0; index < size; ++index) {

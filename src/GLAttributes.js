@@ -130,7 +130,7 @@ export class GLAttributes {
     this._attributes.clear()
 
     const context = this.context.context
-    const program = this._program._pointer
+    const program = this._program.program
     const size = context.getProgramParameter(program, context.ACTIVE_ATTRIBUTES)
 
     for (let index = 0; index < size; ++index) {
