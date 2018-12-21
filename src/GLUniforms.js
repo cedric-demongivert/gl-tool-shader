@@ -44,13 +44,19 @@ export class GLUniforms {
     )
   }
 
+  setIfExists (name, ...params) {
+    if (this.has(name)) {
+      this.set(name, ...params)
+    }
+
+    return this
+  }
+
   /**
   * Set the value of an uniform.
   *
   * @param {string} name - Name of the uniform to fetch.
   * @param {...any} params - Value to set, for exact parameters documentation please refer to https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/uniform, https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/uniformMatrix and https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/bindTexture.
-  *
-  * @return {any} The value of the requested uniform.
   *
   * @throws {InvalidParameterError} If the uniform to set does not exists.
   */
@@ -66,6 +72,8 @@ export class GLUniforms {
     } else {
       this._setArray(name, params)
     }
+
+    return this
   }
 
   _setValue (name, params) {
