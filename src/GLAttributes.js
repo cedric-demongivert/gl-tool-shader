@@ -40,7 +40,7 @@ export class GLAttributes {
   */
   set (name, normalized = false, stride = 0, offset = 0) {
     const location = this._attributes.get(name).location
-    const type = this._attributes.get(name).type
+    const type = this.scalarTypeOf(name)
     const size = this._attributes.get(name).size
 
     this.context.context.vertexAttribPointer(
@@ -92,7 +92,37 @@ export class GLAttributes {
   * @return {number} A webgl constant that describe the type of the requested attribute.
   */
   typeof (name) {
-    return this._attributes.get(name).location
+    return this._attributes.get(name).type
+  }
+
+  scalarTypeOf (name) {
+    const context = this.context.context
+
+    switch (this.typeof(name)) {
+      case context.BYTE:
+        return context.BYTE
+      case context.UNSIGNED_BYTE:
+        return context.UNSIGNED_BYTE
+      case context.INT:
+      case context.INT_VEC2:
+      case context.INT_VEC3:
+      case context.INT_VEC4:
+        return context.INT
+      case context.UNSIGNED_INT:
+        return context.UNSIGNED_INT
+      case context.SHORT:
+        return context.SHORT
+      case context.FLOAT:
+      case context.FLOAT_VEC2:
+      case context.FLOAT_VEC3:
+      case context.FLOAT_VEC4:
+      case context.FLOAT_MAT2:
+      case context.FLOAT_MAT3:
+      case context.FLOAT_MAT4:
+        return context.FLOAT
+    }
+
+    return null
   }
 
   /**
