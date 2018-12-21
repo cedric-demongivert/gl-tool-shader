@@ -43,7 +43,7 @@ export class GLAttributes {
     const type = this._attributes.get(name).type
     const size = this._attributes.get(name).size
 
-    context.vertexAttribPointer(
+    this.context.context.vertexAttribPointer(
       location, size, type,
       normalized, stride, offset
     )
