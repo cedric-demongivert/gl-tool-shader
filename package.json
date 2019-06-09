@@ -1,6 +1,6 @@
 {
   "name": "@cedric-demongivert/gl-tool-shader",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Shader management classes of the gl-tool engine.",
   "main": "index.js",
   "scripts": {
