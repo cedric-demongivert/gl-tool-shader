@@ -16,6 +16,7 @@ export class GLShader extends GLContextualisation {
   constructor (context, shader) {
     super(context, shader)
     this._shader = null
+    this._source = null
     this._programs = new Set()
     this._compiled = false
   }
@@ -28,13 +29,13 @@ export class GLShader extends GLContextualisation {
   create () {
     if (this._shader == null) {
       const context = this.context.context
+
       const result = context.createShader(
         contextualiseShaderType(context, this.descriptor.type)
       )
 
-      context.shaderSource(result, this.descriptor.source)
-
       this._shader = result
+      this.source = this.descriptor.source
     }
 
     return this
@@ -53,7 +54,23 @@ export class GLShader extends GLContextualisation {
   * @return {string} The source code of this shader.
   */
   get source () {
-    return this.descriptor.source
+    return this._source
+  }
+
+  /**
+  * Update the source code of this shader.
+  *
+  * @param {string} value - The new source code of this shader.
+  */
+  set source (value) {
+    this._source = value
+    this._compiled = false
+
+    if (value) this.context.context.shaderSource(this._shader, value)
+
+    for (const program of this.programs()) {
+      program.unlink()
+    }
   }
 
   /**
@@ -111,14 +128,14 @@ export class GLShader extends GLContextualisation {
         this.context.context.attachShader(program.program, this.shader)
       } else {
         throw new Error([
-            'Unnable to attach this shader to the given program because the ',
+            'Unable to attach this shader to the given program because the ',
             'given program does not declare this shader as its fragment or ',
             'vertex shader.'
         ].join(''))
       }
     } else {
       throw new Error([
-        'Unnable to attach this shader to the given program because the ',
+        'Unable to attach this shader to the given program because the ',
         'given program is not attached to the same context as this shader.'
       ].join(''))
     }
@@ -145,6 +162,11 @@ export class GLShader extends GLContextualisation {
   */
   compile () {
     if (this._shader == null) this.create()
+    if (this._source == null) throw new Error([
+      'Unable to compile this shader because it currently have no sources to ',
+      'compile.'
+    ].join(''))
+
     if (!this._compiled) {
       const context = this.context.context
       const shader = this._shader

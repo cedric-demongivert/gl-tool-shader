@@ -1,4 +1,7 @@
-import { Descriptor } from '@cedric-demongivert/gl-tool-core'
+import {
+  Descriptor,
+  GLContextualisation
+} from '@cedric-demongivert/gl-tool-core'
 import { GLShader } from './GLShader'
 import { VERTEX_SHADER, FRAGMENT_SHADER } from './ShaderType'
 
@@ -7,14 +10,13 @@ import { VERTEX_SHADER, FRAGMENT_SHADER } from './ShaderType'
 */
 export class Shader extends Descriptor {
   /**
-  * Create a new webgl shader from source code.
+  * Create a new webgl shader.
   *
-  * @param {string} source - Source code of the shader to create.
   * @param {ShaderType} type - Type shader to create.
   */
-  constructor (source, type) {
+  constructor (type) {
     super()
-    this._source = source
+    this._source = null
     this._type = type
   }
 
@@ -28,12 +30,30 @@ export class Shader extends Descriptor {
   }
 
   /**
+  * Update the source code of this shader.
+  *
+  * @param {string} source - The new source code of this shader.
+  */
+  set source (source) {
+    this._source = source
+  }
+
+  /**
   * Return the type of this shader.
   *
   * @return {ShaderType} The type of this shader.
   */
   get type () {
     return this._type
+  }
+
+  /**
+  * Commit this shader content to its contextualised instances.
+  */
+  commit () {
+    for (const contextualisation of GLContextualisation.all(this)) {
+      contextualisation.source = this._source
+    }
   }
 
   /**
@@ -49,12 +69,10 @@ export class Shader extends Descriptor {
 */
 export class VertexShader extends Shader {
   /**
-  * Create a new vertex shader instance from some source code.
-  *
-  * @param {string} source - Source code of the shader to create.
+  * Create a new vertex shader instance.
   */
-  constructor (source) {
-    super(source, VERTEX_SHADER)
+  constructor () {
+    super(VERTEX_SHADER)
   }
 }
 
@@ -63,12 +81,10 @@ export class VertexShader extends Shader {
 */
 export class FragmentShader extends Shader {
   /**
-  * Create a new fragment shader instance from some source code.
-  *
-  * @param {string} source - Source code of the shader to create.
+  * Create a new fragment shader instance.
   */
-  constructor (source) {
-    super(source, FRAGMENT_SHADER)
+  constructor () {
+    super(FRAGMENT_SHADER)
   }
 }
 

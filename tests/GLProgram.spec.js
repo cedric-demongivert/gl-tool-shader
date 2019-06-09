@@ -1,17 +1,17 @@
 /* eslint-env jest */
 
 import { Shader, GLProgram, Program } from '@library'
-import { GLContext } from '@cedric-demongivert/gl-tool-core'
+import {
+  GLContext,
+  GLContextualisation
+} from '@cedric-demongivert/gl-tool-core'
 import { createWebGLContext } from './createWebGLContext'
 
 describe('GLProgram', function () {
   describe('#constructor', function () {
     it('instantiate a new contextualisation of a given Program descriptor', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Program(
-        new Shader.Vertex('source'),
-        new Shader.Fragment('source')
-      )
+      const descriptor = new Program()
       const contextualisation = new GLProgram(context, descriptor)
 
       expect(contextualisation.descriptor).toBe(descriptor)
@@ -24,11 +24,13 @@ describe('GLProgram', function () {
   describe('#create', function () {
     it('create the program into the context', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Program(
-        new Shader.Vertex('source'),
-        new Shader.Fragment('source')
-      )
+      const vertexShader = new Shader.Vertex()
+      const fragmentShader = new Shader.Fragment()
+      const descriptor = new Program()
       const contextualisation = new GLProgram(context, descriptor)
+
+      descriptor.vertex = vertexShader
+      descriptor.fragment = fragmentShader
 
       const program = Symbol()
       context.createShader.mockImplementation(_ => Symbol())
@@ -37,8 +39,8 @@ describe('GLProgram', function () {
       expect(contextualisation.program).toBeNull()
       expect(contextualisation.created).toBeFalsy()
 
-      contextualisation.vertex.create()
-      contextualisation.fragment.create()
+      GLContextualisation.of(context, vertexShader).create()
+      GLContextualisation.of(context, fragmentShader).create()
       contextualisation.create()
 
       expect(contextualisation.program).toBe(program)
@@ -50,18 +52,24 @@ describe('GLProgram', function () {
 
     it('create underlying shaders if necessary', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Program(
-        new Shader.Vertex('source'),
-        new Shader.Fragment('source')
-      )
+      const vertexShader = new Shader.Vertex()
+      const fragmentShader = new Shader.Fragment()
+      const descriptor = new Program()
       const contextualisation = new GLProgram(context, descriptor)
+
+      descriptor.vertex = vertexShader
+      descriptor.fragment = fragmentShader
 
       const program = Symbol()
       context.createShader.mockImplementation(_ => Symbol())
       context.createProgram.mockReturnValue(program)
 
-      contextualisation.vertex.create = jest.fn(contextualisation.vertex.create)
-      contextualisation.fragment.create = jest.fn(contextualisation.fragment.create)
+      GLContextualisation.of(context, vertexShader).create = jest.fn(
+        GLContextualisation.of(context, vertexShader).create
+      )
+      GLContextualisation.of(context, fragmentShader).create = jest.fn(
+        GLContextualisation.of(context, fragmentShader).create
+      )
       contextualisation.create()
 
       expect(contextualisation.program).toBe(program)
@@ -74,11 +82,13 @@ describe('GLProgram', function () {
   describe('#logs', function () {
     it('return the program linking logs', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Program(
-        new Shader.Vertex('source'),
-        new Shader.Fragment('source')
-      )
+      const vertexShader = new Shader.Vertex()
+      const fragmentShader = new Shader.Fragment()
+      const descriptor = new Program()
       const contextualisation = new GLProgram(context, descriptor)
+
+      descriptor.vertex = vertexShader
+      descriptor.fragment = fragmentShader
 
       const program = Symbol()
       context.createShader.mockImplementation(_ => Symbol())
@@ -95,11 +105,13 @@ describe('GLProgram', function () {
   describe('#used', function () {
     it('return true if the current program is used', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Program(
-        new Shader.Vertex('source'),
-        new Shader.Fragment('source')
-      )
+      const vertexShader = new Shader.Vertex()
+      const fragmentShader = new Shader.Fragment()
+      const descriptor = new Program()
       const contextualisation = new GLProgram(context, descriptor)
+
+      descriptor.vertex = vertexShader
+      descriptor.fragment = fragmentShader
 
       const program = Symbol()
       context.createShader.mockImplementation(_ => Symbol())
@@ -114,11 +126,13 @@ describe('GLProgram', function () {
 
     it('return false otherwise', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Program(
-        new Shader.Vertex('source'),
-        new Shader.Fragment('source')
-      )
+      const vertexShader = new Shader.Vertex()
+      const fragmentShader = new Shader.Fragment()
+      const descriptor = new Program()
       const contextualisation = new GLProgram(context, descriptor)
+
+      descriptor.vertex = vertexShader
+      descriptor.fragment = fragmentShader
 
       const program = Symbol()
       context.createShader.mockImplementation(_ => Symbol())
@@ -135,11 +149,15 @@ describe('GLProgram', function () {
   describe('#link', function () {
     it('link the program', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Program(
-        new Shader.Vertex('source'),
-        new Shader.Fragment('source')
-      )
+      const vertexShader = new Shader.Vertex()
+      vertexShader.source = 'vertex source'
+      const fragmentShader = new Shader.Fragment()
+      fragmentShader.source = 'fragment source'
+      const descriptor = new Program()
       const contextualisation = new GLProgram(context, descriptor)
+
+      descriptor.vertex = vertexShader
+      descriptor.fragment = fragmentShader
 
       const program = Symbol()
       context.createShader.mockImplementation(_ => Symbol())
@@ -164,11 +182,15 @@ describe('GLProgram', function () {
 
     it('create the program if necessary', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Program(
-        new Shader.Vertex('source'),
-        new Shader.Fragment('source')
-      )
+      const vertexShader = new Shader.Vertex()
+      vertexShader.source = 'vertex source'
+      const fragmentShader = new Shader.Fragment()
+      fragmentShader.source = 'fragment source'
+      const descriptor = new Program()
       const contextualisation = new GLProgram(context, descriptor)
+
+      descriptor.vertex = vertexShader
+      descriptor.fragment = fragmentShader
 
       const program = Symbol()
       context.createShader.mockImplementation(_ => Symbol())
@@ -191,11 +213,15 @@ describe('GLProgram', function () {
 
     it('throw if the linking operation fails', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Program(
-        new Shader.Vertex('source'),
-        new Shader.Fragment('source')
-      )
+      const vertexShader = new Shader.Vertex()
+      vertexShader.source = 'vertex source'
+      const fragmentShader = new Shader.Fragment()
+      fragmentShader.source = 'fragment source'
+      const descriptor = new Program()
       const contextualisation = new GLProgram(context, descriptor)
+
+      descriptor.vertex = vertexShader
+      descriptor.fragment = fragmentShader
 
       const program = Symbol()
       context.createShader.mockImplementation(_ => Symbol())
@@ -212,11 +238,15 @@ describe('GLProgram', function () {
   describe('#use', function () {
     it('put the program in use', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Program(
-        new Shader.Vertex('source'),
-        new Shader.Fragment('source')
-      )
+      const vertexShader = new Shader.Vertex()
+      vertexShader.source = 'vertex source'
+      const fragmentShader = new Shader.Fragment()
+      fragmentShader.source = 'fragment source'
+      const descriptor = new Program()
       const contextualisation = new GLProgram(context, descriptor)
+
+      descriptor.vertex = vertexShader
+      descriptor.fragment = fragmentShader
 
       const program = Symbol()
       context.createShader.mockImplementation(_ => Symbol())
@@ -236,11 +266,13 @@ describe('GLProgram', function () {
   describe('#destroy', function () {
     it('destroy the program', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Program(
-        new Shader.Vertex('source'),
-        new Shader.Fragment('source')
-      )
+      const vertexShader = new Shader.Vertex()
+      const fragmentShader = new Shader.Fragment()
+      const descriptor = new Program()
       const contextualisation = new GLProgram(context, descriptor)
+
+      descriptor.vertex = vertexShader
+      descriptor.fragment = fragmentShader
 
       const program = Symbol()
       context.createShader.mockImplementation(_ => Symbol())
@@ -251,24 +283,30 @@ describe('GLProgram', function () {
       contextualisation.attributes.update = jest.fn()
       contextualisation.create()
 
-      const vertexShader = contextualisation.vertex.shader
-      const fragmentShader = contextualisation.fragment.shader
+      const cVertexShader = contextualisation.vertex.shader
+      const cFragmentShader = contextualisation.fragment.shader
 
       contextualisation.destroy()
 
       expect(context.deleteProgram).toHaveBeenCalledWith(program)
-      expect(context.detachShader).toHaveBeenCalledWith(program, vertexShader)
-      expect(context.detachShader).toHaveBeenCalledWith(program, fragmentShader)
+      expect(context.detachShader).toHaveBeenCalledWith(
+        program, cVertexShader
+      )
+      expect(context.detachShader).toHaveBeenCalledWith(
+        program, cFragmentShader
+      )
       expect(contextualisation.program).toBeNull()
     })
 
     it('does nothing if the program was not created', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Program(
-        new Shader.Vertex('source'),
-        new Shader.Fragment('source')
-      )
+      const vertexShader = new Shader.Vertex()
+      const fragmentShader = new Shader.Fragment()
+      const descriptor = new Program()
       const contextualisation = new GLProgram(context, descriptor)
+
+      descriptor.vertex = vertexShader
+      descriptor.fragment = fragmentShader
 
       expect(context.deleteProgram).not.toHaveBeenCalled()
       expect(context.detachShader).not.toHaveBeenCalled()

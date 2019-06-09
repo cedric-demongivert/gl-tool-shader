@@ -18,6 +18,8 @@ export class GLProgram extends GLContextualisation {
 
     this._program = null
     this._linked = false
+    this._vertex = null
+    this._fragment = null
     this._uniforms = new GLUniforms(this)
     this._attributes = new GLAttributes(this)
   }
@@ -33,12 +35,7 @@ export class GLProgram extends GLContextualisation {
       const descriptor = this.descriptor
 
       this._program = context.createProgram()
-
-      if (!this.vertex.created) this.vertex.create()
-      if (!this.fragment.created) this.fragment.create()
-
-      this.vertex.attach(this)
-      this.fragment.attach(this)
+      this.synchronize()
     }
 
     return this
@@ -78,7 +75,7 @@ export class GLProgram extends GLContextualisation {
   * @return {GLShader} The vertex shader used by this program.
   */
   get vertex () {
-    return GLContextualisation.of(this.context, this.descriptor.vertex)
+    return this._vertex
   }
 
   /**
@@ -87,7 +84,7 @@ export class GLProgram extends GLContextualisation {
   * @return {GLShader} The fragment shader used by this program.
   */
   get fragment () {
-    return GLContextualisation.of(this.context, this.descriptor.fragment)
+    return this._fragment
   }
 
   /**
@@ -124,10 +121,16 @@ export class GLProgram extends GLContextualisation {
   */
   link () {
     if (!this._created) this.create()
+    if (this._vertex == null) throw new Error(
+      'Unable to link this program because it do not have a vertex shader.'
+    )
+    if (this._fragment == null) throw new Error(
+      'Unable to link this program because it do not have a fragment shader.'
+    )
 
     if (!this._linked) {
-      this.vertex.compile()
-      this.fragment.compile()
+      this._vertex.compile()
+      this._fragment.compile()
 
       const context = this.context.context
       const program = this._program
@@ -152,13 +155,56 @@ export class GLProgram extends GLContextualisation {
   }
 
   /**
+  * Synchronize this program instance with its descriptor.
+  */
+  synchronize () {
+    this._linked = false
+
+    if (this._vertex) this._vertex.detach(this)
+    if (this._fragment) this._fragment.detach(this)
+
+    if (this.descriptor.vertex) {
+      this._vertex = GLContextualisation.of(
+        this.context, this.descriptor.vertex
+      )
+      if (!this._vertex.created) this._vertex.create()
+      this._vertex.attach(this)
+    } else {
+      this._vertex = null
+    }
+
+    if (this.descriptor.fragment) {
+      this._fragment = GLContextualisation.of(
+        this.context, this.descriptor.fragment
+      )
+      if (!this._fragment.created) this._fragment.create()
+      this._fragment.attach(this)
+    } else {
+      this._fragment = null
+    }
+  }
+
+  /**
+  * Mark this program as if it was not linked.
+  */
+  unlink () {
+    this._linked = false
+  }
+
+  /**
   * Destroy this program.
   */
   destroy () {
     if (this._program) {
       if (this._program != null) {
-        this.vertex.detach(this)
-        this.fragment.detach(this)
+        if (this._vertex) {
+          this._vertex.detach(this)
+          this._vertex = null
+        }
+        if (this._fragment) {
+          this._fragment.detach(this)
+          this._fragment = null
+        }
         this.context.context.deleteProgram(this._program)
         this._program = null
       }

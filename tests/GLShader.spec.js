@@ -8,10 +8,14 @@ describe('GLShader', function () {
   describe('#constructor', function () {
     it('instantiate a new contextualisation of a given Shader descriptor', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Shader.Vertex('source')
+
+      const descriptor = new Shader.Vertex()
+      descriptor.source = 'source'
+
       const contextualisation = new GLShader(context, descriptor)
 
       expect(contextualisation.descriptor).toBe(descriptor)
+      expect(contextualisation.source).toBeNull()
       expect(contextualisation.context).toBe(GLContext.of(context))
       expect(contextualisation.shader).toBeNull()
       expect(contextualisation.compiled).toBeFalsy()
@@ -21,16 +25,21 @@ describe('GLShader', function () {
   describe('#create', function () {
     it('create the underlying shader', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Shader.Vertex('source')
+
+      const descriptor = new Shader.Vertex()
+      descriptor.source = 'source'
+
       const contextualisation = new GLShader(context, descriptor)
 
       const shader = Symbol()
+
       context.createShader.mockReturnValue(shader)
 
       expect(contextualisation.shader).toBeNull()
 
       contextualisation.create()
 
+      expect(contextualisation.source).toBe('source')
       expect(contextualisation.shader).toBe(shader)
       expect(context.createShader).toHaveBeenCalledWith(context.VERTEX_SHADER)
       expect(context.shaderSource).toHaveBeenCalledWith(shader, 'source')
@@ -38,7 +47,10 @@ describe('GLShader', function () {
 
     it('does nothing if the shader was already created', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Shader.Vertex('source')
+
+      const descriptor = new Shader.Vertex()
+      descriptor.source = 'source'
+
       const contextualisation = new GLShader(context, descriptor)
 
       const shader = Symbol()
@@ -59,17 +71,35 @@ describe('GLShader', function () {
   describe('#source', function () {
     it('return the source code of this shader', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Shader.Vertex('source')
+
+      const descriptor = new Shader.Vertex()
+      descriptor.source = 'source'
+
       const contextualisation = new GLShader(context, descriptor)
 
-      expect(contextualisation.source).toBe(descriptor.source)
+      const shader = Symbol()
+
+      context.createShader.mockReturnValue(shader)
+
+      expect(contextualisation.source).toBeNull()
+
+      contextualisation.create()
+
+      expect(contextualisation.source).toBe('source')
+
+      descriptor.source = 'pwet'
+
+      expect(contextualisation.source).toBe('source')
     })
   })
 
   describe('#type', function () {
     it('return the type of this shader', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Shader.Vertex('source')
+
+      const descriptor = new Shader.Vertex()
+      descriptor.source = 'source'
+
       const contextualisation = new GLShader(context, descriptor)
 
       const shader = Symbol()
@@ -87,7 +117,10 @@ describe('GLShader', function () {
   describe('#created', function () {
     it('return true if the shader was created, false otherwise', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Shader.Vertex('source')
+
+      const descriptor = new Shader.Vertex()
+      descriptor.source = 'source'
+
       const contextualisation = new GLShader(context, descriptor)
 
       const shader = Symbol()
@@ -104,7 +137,10 @@ describe('GLShader', function () {
   describe('#logs', function () {
     it('return the shader compilation info logs', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Shader.Vertex('source')
+
+      const descriptor = new Shader.Vertex()
+      descriptor.source = 'source'
+
       const contextualisation = new GLShader(context, descriptor)
 
       const shader = Symbol()
@@ -121,7 +157,10 @@ describe('GLShader', function () {
   describe('#compile', function () {
     it('compile the shader', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Shader.Vertex('source')
+
+      const descriptor = new Shader.Vertex()
+      descriptor.source = 'source'
+
       const contextualisation = new GLShader(context, descriptor)
 
       const shader = Symbol()
@@ -143,7 +182,10 @@ describe('GLShader', function () {
 
     it('create the shader if the shader was not created', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Shader.Vertex('source')
+
+      const descriptor = new Shader.Vertex()
+      descriptor.source = 'source'
+
       const contextualisation = new GLShader(context, descriptor)
 
       const shader = Symbol()
@@ -159,7 +201,10 @@ describe('GLShader', function () {
 
     it('does nothing if the shader was already compiled', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Shader.Vertex('source')
+
+      const descriptor = new Shader.Vertex()
+      descriptor.source = 'source'
+
       const contextualisation = new GLShader(context, descriptor)
 
       const shader = Symbol()
@@ -177,7 +222,25 @@ describe('GLShader', function () {
 
     it('throw an error if the compilation fails', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Shader.Vertex('source')
+
+      const descriptor = new Shader.Vertex()
+      descriptor.source = 'source'
+
+      const contextualisation = new GLShader(context, descriptor)
+
+      const shader = Symbol()
+      context.createShader.mockReturnValue(shader)
+      contextualisation.create = jest.fn(contextualisation.create)
+      context.getShaderParameter.mockReturnValue(false)
+
+      expect(_ => contextualisation.compile()).toThrow()
+    })
+
+    it('throw an error if the shader does not have a source code to compile', function () {
+      const context = createWebGLContext(jest)
+
+      const descriptor = new Shader.Vertex()
+
       const contextualisation = new GLShader(context, descriptor)
 
       const shader = Symbol()
@@ -192,7 +255,10 @@ describe('GLShader', function () {
   describe('#destroy', function () {
     it('destroy the underlying shader', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Shader.Vertex('source')
+
+      const descriptor = new Shader.Vertex()
+      descriptor.source = 'source'
+
       const contextualisation = new GLShader(context, descriptor)
 
       const shader = Symbol()
@@ -206,7 +272,10 @@ describe('GLShader', function () {
 
     it('does nothing if the shader was not created', function () {
       const context = createWebGLContext(jest)
-      const descriptor = new Shader.Vertex('source')
+
+      const descriptor = new Shader.Vertex()
+      descriptor.source = 'source'
+      
       const contextualisation = new GLShader(context, descriptor)
 
       contextualisation.destroy()
