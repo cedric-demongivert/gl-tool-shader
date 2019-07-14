@@ -82,28 +82,60 @@ export class GLUniforms {
 
     switch (this._uniforms.get(name).type) {
       case context.FLOAT:
-        context.uniform1f(location, ...params)
+        if (params[0].length) {
+          context.uniform1fv(location, ...params)
+        } else {
+          context.uniform1f(location, ...params)
+        }
         break
       case context.FLOAT_VEC2:
-        context.uniform2f(location, ...params)
+        if (params[0].length) {
+          context.uniform2fv(location, ...params)
+        } else {
+          context.uniform2f(location, ...params)
+        }
         break
       case context.FLOAT_VEC3:
-        context.uniform3f(location, ...params)
+        if (params[0].length) {
+          context.uniform3fv(location, ...params)
+        } else {
+          context.uniform3f(location, ...params)
+        }
         break
       case context.FLOAT_VEC4:
-        context.uniform4f(location, ...params)
+        if (params[0].length) {
+          context.uniform4fv(location, ...params)
+        } else {
+          context.uniform4f(location, ...params)
+        }
         break
       case context.INT:
-        context.uniform1i(location, ...params)
+        if (params[0].length) {
+          context.uniform1iv(location, ...params)
+        } else {
+          context.uniform1i(location, ...params)
+        }
         break
       case context.INT_VEC2:
-        context.uniform2i(location, ...params)
+        if (params[0].length) {
+          context.uniform2iv(location, ...params)
+        } else {
+          context.uniform2i(location, ...params)
+        }
         break
       case context.INT_VEC3:
-        context.uniform3i(location, ...params)
+        if (params[0].length) {
+          context.uniform3iv(location, ...params)
+        } else {
+          context.uniform3i(location, ...params)
+        }
         break
       case context.INT_VEC4:
-        context.uniform4i(location, ...params)
+        if (params[0].length) {
+          context.uniform4iv(location, ...params)
+        } else {
+          context.uniform4i(location, ...params)
+        }
         break
       case context.FLOAT_MAT2:
         context.uniformMatrix2fv(location, ...params)
