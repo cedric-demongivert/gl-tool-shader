@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "es6",
+    "types": ["jest", "node"],
+    "alwaysStrict": true,
+    "moduleResolution": "node",
+    "declaration": true,
+    "declarationDir": "./distribution/types",
+    "outDir": "./distribution/sources"
+  },
+  "include": [ "sources/**/*" ],
+  "exclude": [ "node_modules", "**/*.spec.ts" ]
+}

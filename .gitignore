@@ -1,6 +1,5 @@
 node_modules
-dist
-doc
+distribution
 coverage
 npm-debug.log
 yarn-error.log

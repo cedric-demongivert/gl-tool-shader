@@ -19,6 +19,7 @@ build:
   stage: build
   script:
     - npm run build
+    - npm run documentation
   only:
     - tags
   tags:
@@ -27,14 +28,14 @@ build:
   artifacts:
     untracked: true
     paths:
-      - ./dist
+      - ./distribution
 
 publish:
   stage: publish
   only:
     - tags
   script:
-    - npm publish ./dist --access public
+    - npm publish ./distribution --access public
   tags:
     - NodeJS
     - NPM
