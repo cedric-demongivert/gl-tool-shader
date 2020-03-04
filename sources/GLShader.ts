@@ -130,7 +130,7 @@ export class GLShader extends GLContextualisation<Shader> {
   */
   public destroy () {
     for (const program of this.programs) {
-      program.unlink()
+      program.linked = false
       this.detach(program)
     }
 

@@ -14,7 +14,7 @@ export class ShaderCompilationError extends Error {
       'Shader compilation failed. \r\n\r\n' +
       'Source code : \r\n' + (
         shader.source.split(/\r\n|\n|\r/).map(
-          (line : string, index : string, lines : string[]) => (
+          (line : string, index : number, lines : string[]) => (
             (index + 1).toString().padStart(`${lines.length}`.length, ' ') +
             ' : ' + line
           )
