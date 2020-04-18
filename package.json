@@ -3,6 +3,7 @@
   "version": "0.2.0",
   "description": "Shader management classes of the gl-tool engine.",
   "main": "index.js",
+  "types": "./types/index.d.ts",
   "scripts": {
     "preversion": "yarn install && yarn test",
     "version": "yarn run build && git add --all",

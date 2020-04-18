@@ -130,7 +130,7 @@ export namespace FieldType {
   *
   * @return The number of scalars that compose the given type.
   */
-  export function scalarSize (value : FieldType) : FieldType {
+  export function scalarSize (value : FieldType) : number {
     switch (value) {
       case BYTE:
       case UNSIGNED_BYTE:
