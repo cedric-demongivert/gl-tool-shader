@@ -1,12 +1,12 @@
 export type ShaderType = GLenum
 
 export namespace ShaderType {
-  export const FRAGMENT_SHADER : ShaderType = 0x8B30
-  export const VERTEX_SHADER   : ShaderType = 0x8B31
+  export const FRAGMENT : ShaderType = 0
+  export const VERTEX   : ShaderType = 1
 
   export const ALL             : ShaderType[] = [
-    FRAGMENT_SHADER,
-    VERTEX_SHADER
+    FRAGMENT,
+    VERTEX
   ]
 
   /**
@@ -18,9 +18,9 @@ export namespace ShaderType {
   */
   export function toString (type : ShaderType) : string {
     switch (type) {
-      case FRAGMENT_SHADER : return 'FRAGMENT_SHADER'
-      case VERTEX_SHADER   : return 'VERTEX_SHADER'
-      default              : return undefined
+      case FRAGMENT : return 'FRAGMENT'
+      case VERTEX   : return 'VERTEX'
+      default       : return undefined
     }
   }
 }

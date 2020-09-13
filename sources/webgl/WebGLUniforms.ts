@@ -1,24 +1,27 @@
-import { GLProgram } from './GLProgram'
-import { ProgramParameter } from './ProgramParameter'
-import { UniformMetadata } from './UniformMetadata'
-import { FieldType } from './FieldType'
-import { TextureUnit } from './TextureUnit'
+import { WebGLProgramParameter } from './WebGLProgramParameter'
+import { WebGLUniformMetadata } from './WebGLUniformMetadata'
+import { WebGLFieldType } from './WebGLFieldType'
+import { WebGLTextureUnit } from './WebGLTextureUnit'
 
 /**
 * Uniforms of a given webgl program.
 */
-export class GLUniforms {
-  public readonly program : GLProgram
-  public readonly uniforms : Map<string, UniformMetadata>
+export class WebGLUniforms {
+  private _context : WebGLRenderingContext
+  private _program : WebGLProgram
+
+  public readonly uniforms : Map<string, WebGLUniformMetadata>
 
   /**
   * Create a new uniforms instance for a given program.
   *
+  * @param context - Rendering context of the program to handle.
   * @param program - A program that declare the uniforms.
   */
-  public constructor (program : GLProgram) {
-    this.program = program
-    this.uniforms = new Map<string, UniformMetadata>()
+  public constructor (context : WebGLRenderingContext, program : WebGLProgram) {
+    this._context = context
+    this._program = program
+    this.uniforms = new Map<string, WebGLUniformMetadata>()
   }
 
   /**
@@ -29,8 +32,8 @@ export class GLUniforms {
   * @return The value of the requested uniform.
   */
   public get <T> (name : string) : T {
-    return this.program.webgl.getUniform(
-      this.program.program,
+    return this._context.getUniform(
+      this._program,
       this.uniforms.get(name).location
     )
   }
@@ -41,7 +44,7 @@ export class GLUniforms {
   * @param name - Name of the uniform to fetch.
   * @param params - Value to set, for exact parameters documentation please refer to https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/uniform, https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/uniformMatrix and https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/bindTexture.
   */
-  public setIfExists (name : string, value : TextureUnit) : void
+  public setIfExists (name : string, value : WebGLTextureUnit) : void
   public setIfExists (name : string, value : number) : void
   public setIfExists (name : string, x : number, y : number) : void
   public setIfExists (name : string, x : number, y : number, z : number) : void
@@ -53,7 +56,7 @@ export class GLUniforms {
   public setIfExists (name : string, values : Int32Array) : void
   public setIfExists (name : string, values : number[]) : void
   public setIfExists (name : string, ...params : any) : void {
-    const uniform : UniformMetadata = this.uniforms.get(name)
+    const uniform : WebGLUniformMetadata = this.uniforms.get(name)
 
     if (uniform == null) { return }
 
@@ -72,7 +75,7 @@ export class GLUniforms {
   *
   * @throws If the uniform to set does not exists.
   */
-  public set (name : string, value : TextureUnit) : void
+  public set (name : string, value : WebGLTextureUnit) : void
   public set (name : string, value : number) : void
   public set (name : string, x : number, y : number) : void
   public set (name : string, x : number, y : number, z : number) : void
@@ -84,7 +87,7 @@ export class GLUniforms {
   public set (name : string, values : Int32Array) : void
   public set (name : string, values : number[]) : void
   public set (name : string, ...params : any) : void {
-    const uniform : UniformMetadata = this.uniforms.get(name)
+    const uniform : WebGLUniformMetadata = this.uniforms.get(name)
 
     if (uniform == null) {
       throw new Error(`Trying to set an undefined uniform named : ${name}.`)
@@ -103,7 +106,7 @@ export class GLUniforms {
   * @param name - Name of the uniform to fetch.
   * @param params - Value to set, for exact parameters documentation please refer to https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/uniform, https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/uniformMatrix and https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/bindTexture.
   */
-  public setScalar (name : string, value : TextureUnit) : void
+  public setScalar (name : string, value : WebGLTextureUnit) : void
   public setScalar (name : string, value : number) : void
   public setScalar (name : string, x : number, y : number) : void
   public setScalar (name : string, x : number, y : number, z : number) : void
@@ -115,81 +118,81 @@ export class GLUniforms {
   public setScalar (name : string, values : Float32Array) : void
   public setScalar (name : string, values : Int32Array) : void
   public setScalar (name : string, ...params : any) : void {
-    const uniform : UniformMetadata = this.uniforms.get(name)
+    const uniform : WebGLUniformMetadata = this.uniforms.get(name)
 
     const location : WebGLUniformLocation  = uniform.location
-    const webgl    : WebGLRenderingContext = this.program.webgl
+    const webgl    : WebGLRenderingContext = this._context
 
     switch (uniform.type) {
-      case FieldType.FLOAT:
+      case WebGLFieldType.FLOAT:
         if (params[0].length == null) {
           webgl.uniform1f(location, params[0])
         } else {
           webgl.uniform1fv(location, params[0])
         }
         break
-      case FieldType.FLOAT_VEC2:
+      case WebGLFieldType.FLOAT_VEC2:
         if (params[0].length == null) {
           webgl.uniform2f(location, params[0], params[1])
         } else {
           webgl.uniform2fv(location, params[0])
         }
         break
-      case FieldType.FLOAT_VEC3:
+      case WebGLFieldType.FLOAT_VEC3:
         if (params[0].length == null) {
           webgl.uniform3f(location, params[0], params[1], params[2])
         } else {
           webgl.uniform3fv(location, params[0])
         }
         break
-      case FieldType.FLOAT_VEC4:
+      case WebGLFieldType.FLOAT_VEC4:
         if (params[0].length == null) {
           webgl.uniform4f(location, params[0], params[1], params[2], params[3])
         } else {
           webgl.uniform4fv(location, params[0])
         }
         break
-      case FieldType.INT:
+      case WebGLFieldType.INT:
         if (params[0].length == null) {
           webgl.uniform1i(location, params[0])
         } else {
           webgl.uniform1iv(location, params[0])
         }
         break
-      case FieldType.INT_VEC2:
+      case WebGLFieldType.INT_VEC2:
         if (params[0].length == null) {
           webgl.uniform2i(location, params[0], params[1])
         } else {
           webgl.uniform2iv(location, params[0])
         }
         break
-      case FieldType.INT_VEC3:
+      case WebGLFieldType.INT_VEC3:
         if (params[0].length == null) {
           webgl.uniform3i(location, params[0], params[1], params[2])
         } else {
           webgl.uniform3iv(location, params[0])
         }
         break
-      case FieldType.INT_VEC4:
+      case WebGLFieldType.INT_VEC4:
         if (params[0].length == null) {
           webgl.uniform4i(location, params[0], params[1], params[2], params[3])
         } else {
           webgl.uniform4iv(location, params[0])
         }
         break
-      case FieldType.FLOAT_MAT2:
+      case WebGLFieldType.FLOAT_MAT2:
         webgl.uniformMatrix2fv(location, params[0], params[1])
         break
-      case FieldType.FLOAT_MAT3:
+      case WebGLFieldType.FLOAT_MAT3:
         webgl.uniformMatrix3fv(location, params[0], params[1])
         break
-      case FieldType.FLOAT_MAT4:
+      case WebGLFieldType.FLOAT_MAT4:
         webgl.uniformMatrix4fv(location, params[0], params[1])
         break
-      case FieldType.SAMPLER_2D:
+      case WebGLFieldType.SAMPLER_2D:
         webgl.uniform1i(location,  params[0])
         break
-      case FieldType.SAMPLER_CUBE:
+      case WebGLFieldType.SAMPLER_CUBE:
         webgl.uniform1i(location,  params[0])
         break
     }
@@ -205,32 +208,32 @@ export class GLUniforms {
   public setArray (name : string, buffer : Float32Array) : void
   public setArray (name : string, buffer : number[]) : void
   public setArray (name : string, buffer : any) : void {
-    const uniform  : UniformMetadata       = this.uniforms.get(name)
-    const webgl    : WebGLRenderingContext = this.program.webgl
+    const uniform  : WebGLUniformMetadata  = this.uniforms.get(name)
+    const webgl    : WebGLRenderingContext = this._context
 
     switch (uniform.type) {
-      case FieldType.FLOAT:
+      case WebGLFieldType.FLOAT:
         webgl.uniform1fv(uniform.location, buffer)
         break
-      case FieldType.FLOAT_VEC2:
+      case WebGLFieldType.FLOAT_VEC2:
         webgl.uniform2fv(uniform.location, buffer)
         break
-      case FieldType.FLOAT_VEC3:
+      case WebGLFieldType.FLOAT_VEC3:
         webgl.uniform3fv(uniform.location, buffer)
         break
-      case FieldType.FLOAT_VEC4:
+      case WebGLFieldType.FLOAT_VEC4:
         webgl.uniform4fv(uniform.location, buffer)
         break
-      case FieldType.INT:
+      case WebGLFieldType.INT:
         webgl.uniform1iv(uniform.location, buffer)
         break
-      case FieldType.INT_VEC2:
+      case WebGLFieldType.INT_VEC2:
         webgl.uniform2iv(uniform.location, buffer)
         break
-      case FieldType.INT_VEC3:
+      case WebGLFieldType.INT_VEC3:
         webgl.uniform3iv(uniform.location, buffer)
         break
-      case FieldType.INT_VEC4:
+      case WebGLFieldType.INT_VEC4:
         webgl.uniform4iv(uniform.location, buffer)
         break
     }
@@ -242,38 +245,45 @@ export class GLUniforms {
   * @throws When you trying to update uniforms metadatas from an unlinked program.
   */
   public update () : void {
-    if (!this.program.linked) {
-      throw new Error (
-        'Trying to refresh metadata of uniforms of an unlinked program.'
-      )
-    }
-
     this.uniforms.clear()
 
-    const webgl : WebGLRenderingContext = this.program.webgl
-    const program : WebGLProgram        = this.program.program
+    if (this._context.getProgramParameter(this._program, WebGLProgramParameter.LINK_STATUS)) {
+      const webgl : WebGLRenderingContext = this._context
+      const program : WebGLProgram        = this._program
 
-    const size : number = webgl.getProgramParameter(
-      program,
-      ProgramParameter.ACTIVE_UNIFORMS
-    )
+      const size : number = webgl.getProgramParameter(
+        program, WebGLProgramParameter.ACTIVE_UNIFORMS
+      )
 
-    for (let index = 0; index < size; ++index) {
-      const info : WebGLActiveInfo = webgl.getActiveUniform(program, index)
+      for (let index = 0; index < size; ++index) {
+        const info : WebGLActiveInfo = webgl.getActiveUniform(program, index)
 
-      this.uniforms.set(info.name, {
-        name: info.name,
-        type: info.type,
-        size: info.size,
-        location: webgl.getUniformLocation(program, info.name)
-      })
+        this.uniforms.set(info.name, {
+          name: info.name,
+          type: info.type,
+          size: info.size,
+          location: webgl.getUniformLocation(program, info.name)
+        })
+      }
     }
+  }
+
+  /**
+  * Change the underlying program managed by this instance.
+  *
+  * @param context - The rendering context of the program to handle.
+  * @param program - A program that declare the attributes.
+  */
+  public handle (context : WebGLRenderingContext, program : WebGLProgram) : void {
+    this._context = context
+    this._program = program
+    this.update()
   }
 
   /**
   * Iterate over each registered uniforms.
   */
-  public * [Symbol.iterator] () : Iterator<UniformMetadata> {
+  public * [Symbol.iterator] () : Iterator<WebGLUniformMetadata> {
     return this.uniforms.values()
   }
 }

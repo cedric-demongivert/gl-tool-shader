@@ -1,30 +1,30 @@
-export type FieldType = GLenum
+export type WebGLFieldType = GLenum
 
-export namespace FieldType {
-  export const BYTE           : FieldType = 0x1400
-  export const SHORT          : FieldType = 0x1402
-  export const UNSIGNED_BYTE  : FieldType = 0x1401
-  export const UNSIGNED_SHORT : FieldType = 0x1403
-  export const UNSIGNED_INT   : FieldType = 0x1405
-  export const FLOAT          : FieldType = 0x1406
-  export const FLOAT_VEC2     : FieldType = 0x8B50
-  export const FLOAT_VEC3     : FieldType = 0x8B51
-  export const FLOAT_VEC4     : FieldType = 0x8B52
-  export const FLOAT_MAT2     : FieldType = 0x8B5A
-  export const FLOAT_MAT3     : FieldType = 0x8B5B
-  export const FLOAT_MAT4     : FieldType = 0x8B5C
-  export const INT            : FieldType = 0x1404
-  export const INT_VEC2       : FieldType = 0x8B53
-  export const INT_VEC3       : FieldType = 0x8B54
-  export const INT_VEC4       : FieldType = 0x8B55
-  export const BOOL           : FieldType = 0x8B56
-  export const BOOL_VEC2      : FieldType = 0x8B57
-  export const BOOL_VEC3      : FieldType = 0x8B58
-  export const BOOL_VEC4      : FieldType = 0x8B59
-  export const SAMPLER_2D     : FieldType = 0x8B5E
-  export const SAMPLER_CUBE   : FieldType = 0x8B60
+export namespace WebGLFieldType {
+  export const BYTE           : WebGLFieldType = 0x1400
+  export const SHORT          : WebGLFieldType = 0x1402
+  export const UNSIGNED_BYTE  : WebGLFieldType = 0x1401
+  export const UNSIGNED_SHORT : WebGLFieldType = 0x1403
+  export const UNSIGNED_INT   : WebGLFieldType = 0x1405
+  export const FLOAT          : WebGLFieldType = 0x1406
+  export const FLOAT_VEC2     : WebGLFieldType = 0x8B50
+  export const FLOAT_VEC3     : WebGLFieldType = 0x8B51
+  export const FLOAT_VEC4     : WebGLFieldType = 0x8B52
+  export const FLOAT_MAT2     : WebGLFieldType = 0x8B5A
+  export const FLOAT_MAT3     : WebGLFieldType = 0x8B5B
+  export const FLOAT_MAT4     : WebGLFieldType = 0x8B5C
+  export const INT            : WebGLFieldType = 0x1404
+  export const INT_VEC2       : WebGLFieldType = 0x8B53
+  export const INT_VEC3       : WebGLFieldType = 0x8B54
+  export const INT_VEC4       : WebGLFieldType = 0x8B55
+  export const BOOL           : WebGLFieldType = 0x8B56
+  export const BOOL_VEC2      : WebGLFieldType = 0x8B57
+  export const BOOL_VEC3      : WebGLFieldType = 0x8B58
+  export const BOOL_VEC4      : WebGLFieldType = 0x8B59
+  export const SAMPLER_2D     : WebGLFieldType = 0x8B5E
+  export const SAMPLER_CUBE   : WebGLFieldType = 0x8B60
 
-  export const ALL            : FieldType[] = [
+  export const ALL            : WebGLFieldType[] = [
     BYTE,
     UNSIGNED_BYTE,
     SHORT,
@@ -55,7 +55,7 @@ export namespace FieldType {
   *
   * @return The label associated with the given constant.
   */
-  export function toString (value : FieldType) : string {
+  export function toString (value : WebGLFieldType) : string {
     switch (value) {
       case BYTE           : return 'BYTE'
       case UNSIGNED_BYTE  : return 'UNSIGNED_BYTE'
@@ -90,7 +90,7 @@ export namespace FieldType {
   *
   * @return The type of scalar that compose the given type.
   */
-  export function scalar (value : FieldType) : FieldType {
+  export function scalar (value : WebGLFieldType) : WebGLFieldType {
     switch (value) {
       case BYTE:
         return BYTE
@@ -130,7 +130,7 @@ export namespace FieldType {
   *
   * @return The number of scalars that compose the given type.
   */
-  export function scalarSize (value : FieldType) : number {
+  export function scalarSize (value : WebGLFieldType) : number {
     switch (value) {
       case BYTE:
       case UNSIGNED_BYTE:
