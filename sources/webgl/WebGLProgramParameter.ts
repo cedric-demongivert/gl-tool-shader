@@ -1,4 +1,4 @@
-WebGLProgramStateexport type WebGLProgramParameter = GLenum
+export type WebGLProgramParameter = GLenum
 
 export namespace WebGLProgramParameter {
   export const LINK_STATUS       : WebGLProgramParameter = 0x8B82

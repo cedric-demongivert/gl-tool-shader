@@ -1,6 +1,7 @@
 import { Component } from '@cedric-demongivert/gl-tool-ecs'
 
 import { ProgramIdentifier } from '../ProgramIdentifier'
+import { ShaderIdentifier } from '../ShaderIdentifier'
 
 import { Shader } from './Shader'
 
@@ -29,6 +30,22 @@ export class Program {
     this.identifier = identifier
     this.vertex = null
     this.fragment = null
+  }
+
+  public getVertexShaderIdentifier () : ShaderIdentifier {
+    if (this.vertex) {
+      return this.vertex.data.identifier
+    } else {
+      return ShaderIdentifier.UNDEFINED
+    }
+  }
+
+  public getFragmentShaderIdentifier () : ShaderIdentifier {
+    if (this.fragment) {
+      return this.fragment.data.identifier
+    } else {
+      return ShaderIdentifier.UNDEFINED
+    }
   }
 
   /**
