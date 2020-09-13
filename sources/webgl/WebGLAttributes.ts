@@ -11,14 +11,11 @@ export class WebGLAttributes {
   public readonly attributes : Map<string, WebGLAttributeMetadata>
 
   /**
-  * Create a new attributes instance for a given program.
-  *
-  * @param context - The rendering context of the program to handle.
-  * @param program - A program that declare the attributes.
+  * Create a new attributes instance.
   */
-  public constructor (context : WebGLRenderingContext, program : WebGLProgram) {
-    this._context = context
-    this._program = program
+  public constructor () {
+    this._context = null
+    this._program = null
     this.attributes = new Map<string, WebGLAttributeMetadata>()
   }
 

@@ -13,14 +13,11 @@ export class WebGLUniforms {
   public readonly uniforms : Map<string, WebGLUniformMetadata>
 
   /**
-  * Create a new uniforms instance for a given program.
-  *
-  * @param context - Rendering context of the program to handle.
-  * @param program - A program that declare the uniforms.
+  * Create a new uniforms instance.
   */
-  public constructor (context : WebGLRenderingContext, program : WebGLProgram) {
-    this._context = context
-    this._program = program
+  public constructor () {
+    this._context = null
+    this._program = null
     this.uniforms = new Map<string, WebGLUniformMetadata>()
   }
 
