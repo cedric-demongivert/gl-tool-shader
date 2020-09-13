@@ -14,7 +14,7 @@
     "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
     "build": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
     "documentation": "typedoc",
-    "publish": "npm publish ./dist --access public"
+    "publish": "npm publish ./distribution --access public"
   },
   "repository": "https://gitlab.cedric-demongivert.com/gl-tool/gl-tool-shader.git",
   "author": "Cédric DEMONGIVERT <cedric.demongivert@gmail.com>",
