@@ -75,7 +75,7 @@ export class Shader {
              other.source.equals(other.source)
     }
 
-    return true
+    return false
   }
 }
 

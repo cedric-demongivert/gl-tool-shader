@@ -118,6 +118,7 @@ export class WebGLProgramCollection extends System implements ProgramCollectionL
     if (state === WebGLShaderState.BLANK) {
       let program : WebGLProgram = this._webgl.createProgram()
       this._programs.set(identifier, program)
+      this._states.set(identifier, WebGLShaderState.DIRTY)
       return program
     } else {
       throw new Error(

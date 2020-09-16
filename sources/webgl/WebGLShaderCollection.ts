@@ -137,6 +137,7 @@ export class WebGLShaderCollection extends System implements ShaderCollectionLis
       }
 
       this._shaders.set(identifier, shader)
+      this._states.set(identifier, WebGLShaderState.DIRTY)
       return shader
     } else {
       throw new Error(
