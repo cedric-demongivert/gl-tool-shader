@@ -222,6 +222,25 @@ export class WebGLProgramCollection extends System implements ProgramCollectionL
     }
   }
 
+  /**
+  * Release the requested program.
+  *
+  * @param identifier - Program to free.
+  */
+  public free (identifier : ProgramIdentifier) : void {
+    const state : WebGLProgramState = this._states.get(identifier)
+
+    if (state !== WebGLProgramState.BLANK) {
+      this._webgl.deleteProgram(this._programs.get(identifier))
+      this._states.set(identifier, WebGLProgramState.BLANK)
+    } else {
+      throw new Error(
+        'Unable to free the program #' + identifier + ' because this ' +
+        'program was not instantiated into this context.'
+      )
+    }
+  }
+
   public getDescriptors () : ProgramCollection {
     return this._descriptors
   }

@@ -235,6 +235,7 @@ export class WebGLShaderCollection extends System implements ShaderCollectionLis
 
     if (state !== WebGLShaderState.BLANK) {
       this._webgl.deleteShader(this._shaders.get(identifier))
+      this._states.set(identifier, WebGLShaderState.BLANK)
     } else {
       throw new Error(
         'Unable to free the shader #' + identifier + ' because this ' +
