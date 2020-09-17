@@ -35,7 +35,7 @@
   "dependencies": {
     "@cedric-demongivert/gl-tool-collection": "^0.23.0",
     "@cedric-demongivert/gl-tool-core": "^0.4.1",
-    "@cedric-demongivert/gl-tool-ecs": "^0.5.0",
+    "@cedric-demongivert/gl-tool-ecs": "^0.5.1",
     "lodash": "^4.17.11"
   }
 }

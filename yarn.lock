@@ -854,10 +854,10 @@
   resolved "https://registry.yarnpkg.com/@cedric-demongivert/gl-tool-core/-/gl-tool-core-0.4.1.tgz#eebcf5a744af5d4feba15915596b1eabc68a2e23"
   integrity sha512-lau4VchIoymUPcPo0HAdgw4jU+oEUUSMiYtWt7dZ8BW0cg6zxN+p4owLLx62sZDKedkIoRSbcnONcMLBsFEQFQ==
 
-"@cedric-demongivert/gl-tool-ecs@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@cedric-demongivert/gl-tool-ecs/-/gl-tool-ecs-0.5.0.tgz#557ee06f33fe9622962c64b51633922097af1271"
-  integrity sha512-7Mqr4mL33z/TFBtK6L6z5Fg80SHX1k5LcgYk4B7UyQpmgInGlzT3rupVmtJPZzXNx9zYyVD44GEOojtlktSz+g==
+"@cedric-demongivert/gl-tool-ecs@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@cedric-demongivert/gl-tool-ecs/-/gl-tool-ecs-0.5.1.tgz#36331bbbf91995833d3ac86c9a4d6dd1829dde39"
+  integrity sha512-ppj+1Pe1hlf7oWdTzj0/OPo1ugMHOExiiynKpKkn9ZHTHrzsJ/AV9k5A1XZil6nLb1SQI4sDYIsufFNGkVIBBQ==
   dependencies:
     "@cedric-demongivert/gl-tool-collection" "^0.20.3"
 

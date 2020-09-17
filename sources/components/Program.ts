@@ -86,8 +86,8 @@ export class Program {
 
     if (other instanceof Program) {
       return other.identifier === this.identifier &&
-             other.vertex === this.vertex &&
-             other.fragment === this.fragment
+             Component.equals(other.vertex, this.vertex) &&
+             Component.equals(other.fragment, this.fragment)
     }
 
     return false
