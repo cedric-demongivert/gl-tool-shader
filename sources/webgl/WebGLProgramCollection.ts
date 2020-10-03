@@ -165,9 +165,9 @@ export class WebGLProgramCollection extends System implements ProgramCollectionL
           )
         }
 
-        webgl.compileShader(program)
+        webgl.linkProgram(program)
 
-        if (!webgl.getShaderParameter(program, WebGLProgramParameter.LINK_STATUS)) {
+        if (!webgl.getProgramParameter(program, WebGLProgramParameter.LINK_STATUS)) {
           this._states.set(identifier, WebGLProgramState.ERROR)
           throw new WebGLProgramLinkingError(webgl, program)
         }
