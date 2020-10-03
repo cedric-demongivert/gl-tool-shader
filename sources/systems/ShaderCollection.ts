@@ -51,6 +51,7 @@ export class ShaderCollection extends System {
     this._shaders = IdentifierSet.allocate(capacity)
     this._types = Pack.uint8(capacity)
     this._sources = Pack.instance(ShaderSource.ALLOCATOR, capacity)
+    this._sources.size = this._sources.capacity
 
     this.shaders = this._shaders.view()
     this._listeners = new Set()
