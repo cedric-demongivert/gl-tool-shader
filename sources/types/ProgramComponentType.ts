@@ -6,8 +6,8 @@ export const ProgramComponentType : ComponentType<Program> = {
   /**
   * @see OverseerComponentType.instantiate
   */
-  instantiate () : Program {
-    return new Program()
+  instantiate (...parameters : any[]) : Program {
+    return new Program(...parameters)
   },
 
   /**

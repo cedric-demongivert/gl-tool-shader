@@ -6,8 +6,8 @@ export const ShaderComponentType : ComponentType<Shader> = {
   /**
   * @see OverseerComponentType.instantiate
   */
-  instantiate () : Shader {
-    return new Shader()
+  instantiate (...parameters : any[]) : Shader {
+    return new Shader(...parameters)
   },
 
   /**

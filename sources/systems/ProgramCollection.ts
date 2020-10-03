@@ -250,6 +250,7 @@ export class ProgramCollection extends System implements ShaderCollectionListene
         'was already created.'
       )
     } else {
+      this._programs.add(identifier)
       result = identifier
     }
 
@@ -300,14 +301,14 @@ export class ProgramCollection extends System implements ShaderCollectionListene
     if (this._shaders == null || !this._shaders.shaders.has(shader)) {
       throw new Error(
         'Unable to set the vertex shader of the program #' + identifier +
-        'to #' + shader + ' because the given shader does not exists.'
+        ' to #' + shader + ' because the given shader does not exists.'
       )
     }
 
     if (this._shaders.getType(shader) !== ShaderType.VERTEX) {
       throw new Error(
         'Unable to set the vertex shader of the program #' + identifier +
-        'to #' + shader + ' because the given shader is not a vertex shader.'
+        ' to #' + shader + ' because the given shader is not a vertex shader.'
       )
     }
 
@@ -335,14 +336,14 @@ export class ProgramCollection extends System implements ShaderCollectionListene
     if (this._shaders == null || !this._shaders.shaders.has(shader)) {
       throw new Error(
         'Unable to set the fragment shader of the program #' + identifier +
-        'to #' + shader + ' because the given shader does not exists.'
+        ' to #' + shader + ' because the given shader does not exists.'
       )
     }
 
     if (this._shaders.getType(shader) !== ShaderType.FRAGMENT) {
       throw new Error(
         'Unable to set the fragment shader of the program #' + identifier +
-        'to #' + shader + ' because the given shader is not a fragment shader.'
+        ' to #' + shader + ' because the given shader is not a fragment shader.'
       )
     }
 

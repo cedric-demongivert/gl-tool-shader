@@ -131,6 +131,8 @@ export class ShaderCollection extends System {
         ShaderType.toString(identifier) + ' because this shader was ' +
         'already created.'
       )
+    } else {
+      this._shaders.add(identifier)
     }
 
     this._types.set(identifier, type)
