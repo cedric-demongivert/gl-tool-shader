@@ -242,7 +242,7 @@ export class ProgramCollection extends System implements ShaderCollectionListene
   public create (identifier? : number) : ProgramIdentifier {
     let result : number
 
-    if (identifier == null) {
+    if (identifier == null || identifier === ProgramIdentifier.UNDEFINED) {
       result = this._programs.next()
     } else if (this._programs.has(identifier)) {
       throw new Error(

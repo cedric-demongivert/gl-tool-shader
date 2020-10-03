@@ -4,6 +4,7 @@ import { Pack } from '@cedric-demongivert/gl-tool-collection'
 import { Sequence } from '@cedric-demongivert/gl-tool-collection'
 
 import { ShaderType } from '../ShaderType'
+import { ShaderIdentifier } from '../ShaderIdentifier'
 import { ShaderSource } from '../ShaderSource'
 
 import { ShaderCollectionListener } from './ShaderCollectionListener'
@@ -114,19 +115,21 @@ export class ShaderCollection extends System {
     let identifier : number, type : ShaderType
 
     if (parameters.length < 2) {
-      identifier = this._shaders.next()
+      identifier = ShaderIdentifier.UNDEFINED
       type = parameters[0]
     } else {
       identifier = parameters[0]
       type = parameters[1]
+    }
 
-      if (this._shaders.has(identifier)) {
-        throw new Error(
-          'Unable to create shader #' + identifier + ' of type ' +
-          ShaderType.toString(identifier) + ' because this shader was ' +
-          'already created.'
-        )
-      }
+    if (identifier === ShaderIdentifier.UNDEFINED) {
+      identifier = this._shaders.next()
+    } else if (this._shaders.has(identifier)) {
+      throw new Error(
+        'Unable to create shader #' + identifier + ' of type ' +
+        ShaderType.toString(identifier) + ' because this shader was ' +
+        'already created.'
+      )
     }
 
     this._types.set(identifier, type)
