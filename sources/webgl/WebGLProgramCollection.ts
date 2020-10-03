@@ -46,7 +46,7 @@ export class WebGLProgramCollection extends System implements ProgramCollectionL
   */
   public constructor (shaders : WebGLShaderCollection) {
     super()
-    this._programs = Pack.uint32(0)
+    this._programs = Pack.any(0)
     this._states = Pack.uint8(0)
     this._webgl = shaders.getContext()
     this._descriptors = null
