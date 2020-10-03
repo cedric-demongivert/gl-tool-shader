@@ -41,7 +41,7 @@ export class WebGLShaderCollection extends System implements ShaderCollectionLis
   */
   public constructor (webgl : WebGLRenderingContext) {
     super()
-    this._shaders = Pack.uint32(0)
+    this._shaders = Pack.any(0)
     this._states = Pack.uint8(0)
     this._webgl = webgl
     this._descriptors = null
