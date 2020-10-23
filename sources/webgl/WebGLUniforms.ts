@@ -12,6 +12,10 @@ export class WebGLUniforms {
 
   public readonly uniforms : Map<string, WebGLUniformMetadata>
 
+  private readonly _matrix2fTranspositionBuffer : Float32Array
+  private readonly _matrix3fTranspositionBuffer : Float32Array
+  private readonly _matrix4fTranspositionBuffer : Float32Array
+
   /**
   * Create a new uniforms instance.
   */
@@ -19,6 +23,9 @@ export class WebGLUniforms {
     this._context = null
     this._program = null
     this.uniforms = new Map<string, WebGLUniformMetadata>()
+    this._matrix2fTranspositionBuffer = new Float32Array(4)
+    this._matrix3fTranspositionBuffer = new Float32Array(9)
+    this._matrix4fTranspositionBuffer = new Float32Array(16)
   }
 
   /**
@@ -178,13 +185,95 @@ export class WebGLUniforms {
         }
         break
       case WebGLFieldType.FLOAT_MAT2:
-        webgl.uniformMatrix2fv(location, params[0], params[1])
+        if (params[0]) {
+          const a00 : number = params[1][0]
+          const a10 : number = params[1][1]
+          const a01 : number = params[1][2]
+          const a11 : number = params[1][3]
+
+          const buffer : Float32Array = this._matrix2fTranspositionBuffer
+
+          buffer[0] = a00
+          buffer[1] = a01
+          buffer[2] = a10
+          buffer[3] = a11
+
+          webgl.uniformMatrix2fv(location, false, buffer)
+        } else {
+          webgl.uniformMatrix2fv(location, params[0], params[1])
+        }
         break
       case WebGLFieldType.FLOAT_MAT3:
-        webgl.uniformMatrix3fv(location, params[0], params[1])
+        if (params[0]) {
+          const a00 : number = params[1][0]
+          const a10 : number = params[1][1]
+          const a20 : number = params[1][2]
+          const a01 : number = params[1][3]
+          const a11 : number = params[1][4]
+          const a21 : number = params[1][5]
+          const a02 : number = params[1][6]
+          const a12 : number = params[1][7]
+          const a22 : number = params[1][8]
+
+          const buffer : Float32Array = this._matrix3fTranspositionBuffer
+
+          buffer[0] = a00
+          buffer[1] = a01
+          buffer[2] = a02
+          buffer[3] = a10
+          buffer[4] = a11
+          buffer[5] = a12
+          buffer[6] = a20
+          buffer[7] = a21
+          buffer[8] = a22
+
+          webgl.uniformMatrix3fv(location, false, buffer)
+        } else {
+          webgl.uniformMatrix3fv(location, params[0], params[1])
+        }
         break
       case WebGLFieldType.FLOAT_MAT4:
-        webgl.uniformMatrix4fv(location, params[0], params[1])
+        if (params[0]) {
+          const a00 : number = params[1][0]
+          const a10 : number = params[1][1]
+          const a20 : number = params[1][2]
+          const a30 : number = params[1][3]
+          const a01 : number = params[1][4]
+          const a11 : number = params[1][5]
+          const a21 : number = params[1][6]
+          const a31 : number = params[1][7]
+          const a02 : number = params[1][8]
+          const a12 : number = params[1][9]
+          const a22 : number = params[1][10]
+          const a32 : number = params[1][11]
+          const a03 : number = params[1][12]
+          const a13 : number = params[1][13]
+          const a23 : number = params[1][14]
+          const a33 : number = params[1][15]
+
+          const buffer : Float32Array = this._matrix4fTranspositionBuffer
+
+          buffer[0] = a00
+          buffer[1] = a01
+          buffer[2] = a02
+          buffer[3] = a03
+          buffer[4] = a10
+          buffer[5] = a11
+          buffer[6] = a12
+          buffer[7] = a13
+          buffer[8] = a20
+          buffer[9] = a21
+          buffer[10] = a22
+          buffer[11] = a23
+          buffer[12] = a30
+          buffer[13] = a31
+          buffer[14] = a32
+          buffer[15] = a33
+
+          webgl.uniformMatrix4fv(location, false, buffer)
+        } else {
+          webgl.uniformMatrix4fv(location, params[0], params[1])
+        }
         break
       case WebGLFieldType.SAMPLER_2D:
         webgl.uniform1i(location,  params[0])
